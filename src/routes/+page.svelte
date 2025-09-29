@@ -5,8 +5,8 @@
 	import { ApiClient } from '$lib/api/ApiClient';
 	import { FetchHttpClient } from '$lib/http/FetchHttpClient';
 	import AccountCreationContainer from '$lib/components/accounts/AccountCreationContainer.svelte';
-	import TransferContainer from '$lib/components/accounts/TransferContainer.svelte';
-	import ZeroState from '$lib/components/accounts/ZeroState.svelte';
+	import TransferContainer from '$lib/components/transfer/TransferContainer.svelte';
+	import ZeroState from '$lib/components/ZeroState.svelte';
 
 	// Set up the AccountManager context at the root
 	const httpClient = new FetchHttpClient();

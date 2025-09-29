@@ -1,1 +1,0 @@
-<section>Global Error</section>

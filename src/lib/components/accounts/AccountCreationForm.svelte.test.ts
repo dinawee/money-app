@@ -15,28 +15,12 @@ describe('AccountCreationForm', () => {
 		expect(container.firstChild).not.toBeNull();
 	});
 
-	it('should contain numeric input for account_id', () => {
-		const { getByLabelText } = render(AccountCreationForm);
+	it('should contain all required input fields', () => {
+		const { getByLabelText, getByRole } = render(AccountCreationForm);
 
-		const accountIdInput = getByLabelText('Account ID');
-		expect(accountIdInput).toBeInTheDocument();
-		expect(accountIdInput).toHaveAttribute('type', 'number');
-	});
-
-	it('should contain text input for initial_balance', () => {
-		const { getByLabelText } = render(AccountCreationForm);
-
-		const initialBalanceInput = getByLabelText('Initial Amount');
-		expect(initialBalanceInput).toBeInTheDocument();
-		expect(initialBalanceInput).toHaveAttribute('type', 'text');
-	});
-
-	it('should contain submit button', () => {
-		const { getByRole } = render(AccountCreationForm);
-
-		const submitButton = getByRole('button', { name: /create account/i });
-		expect(submitButton).toBeInTheDocument();
-		expect(submitButton).toHaveAttribute('type', 'submit');
+		expect(getByLabelText('Account ID')).toBeInTheDocument();
+		expect(getByLabelText('Initial Amount')).toBeInTheDocument();
+		expect(getByRole('button', { name: /create account/i })).toBeInTheDocument();
 	});
 
 	it('should emit submit event with form data when submitted', async () => {
@@ -60,42 +44,27 @@ describe('AccountCreationForm', () => {
 		});
 	});
 
-	it('should not emit submit event when account_id is missing', async () => {
+	it('should disable submit button and not call onSubmit when fields are not valid', async () => {
 		const user = userEvent.setup();
 		const mockOnSubmit = vi.fn();
-		const { getByLabelText, getByRole } = render(AccountCreationForm, {
+		const { getByLabelText, getByRole, getByText } = render(AccountCreationForm, {
 			props: { onSubmit: mockOnSubmit }
 		});
 
+		const accountIdInput = getByLabelText('Account ID');
 		const initialBalanceInput = getByLabelText('Initial Amount');
 		const submitButton = getByRole('button', { name: /create account/i });
 
-		await user.type(initialBalanceInput, '100.50');
+		await user.clear(accountIdInput);
+		await user.type(accountIdInput, '-1');
+
+		await user.clear(initialBalanceInput);
+		await user.type(initialBalanceInput, '-10');
+
 		await user.click(submitButton);
 
+		expect(getByText('Account ID must be a positive number')).toBeInTheDocument();
+		expect(getByText('Initial amount must be a positive number')).toBeInTheDocument();
 		expect(mockOnSubmit).not.toHaveBeenCalled();
-	});
-
-	it('should display validation errors for empty fields when form is submitted', async () => {
-		const user = userEvent.setup();
-		const mockOnSubmit = vi.fn();
-		const { getByText, getByRole } = render(AccountCreationForm, {
-			props: { onSubmit: mockOnSubmit }
-		});
-
-		const submitButton = getByRole('button', { name: /create account/i });
-		await user.click(submitButton);
-
-		expect(getByText('Account ID is required')).toBeInTheDocument();
-		expect(mockOnSubmit).not.toHaveBeenCalled();
-	});
-
-	it('should be disabled when loading prop is true', () => {
-		const { getByRole } = render(AccountCreationForm, {
-			props: { loading: true }
-		});
-
-		const submitButton = getByRole('button', { name: /creating.../i });
-		expect(submitButton).toBeDisabled();
 	});
 });

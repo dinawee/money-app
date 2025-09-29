@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { validateAccountId, validateAmount } from '$lib/utils/validation';
+
 	let { onSubmit, loading = false } = $props();
 
 	let account_id = $state<number | undefined>(undefined);
 	let initial_balance = $state('');
 	let accountIdError = $state('');
+	let initialAmountError = $state('');
 
 	function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
@@ -13,7 +16,12 @@
 			return;
 		}
 
-		clearErrors();
+		if (!validateAccountId(account_id)) {
+			accountIdError = 'Account ID must be a positive number';
+			return;
+		}
+
+		accountIdError = '';
 
 		onSubmit({
 			account_id: account_id,
@@ -21,8 +29,20 @@
 		});
 	}
 
-	function clearErrors() {
-		accountIdError = '';
+	function validateAccountIdInput() {
+		if (account_id !== undefined && !validateAccountId(account_id)) {
+			accountIdError = 'Account ID must be a positive number';
+		} else {
+			accountIdError = '';
+		}
+	}
+
+	function validateInitialAmountInput() {
+		if (initial_balance !== undefined && !validateAmount(initial_balance)) {
+			initialAmountError = 'Initial amount must be a positive number';
+		} else {
+			initialAmountError = '';
+		}
 	}
 </script>
 
@@ -37,10 +57,21 @@
 				class="input-field-primary input"
 				placeholder="Enter Account ID"
 				bind:value={account_id}
-				onfocus={clearErrors}
+				oninput={validateAccountIdInput}
+				min="1"
+				aria-describedby={accountIdError ? 'account-id-error' : undefined}
+				aria-invalid={!!accountIdError}
+				aria-required="true"
 			/>
 			{#if accountIdError}
-				<span class="text-sm text-error-500">{accountIdError}</span>
+				<span
+					id="account-id-error"
+					class="text-sm text-error-500"
+					role="alert"
+					aria-live="polite"
+				>
+					{accountIdError}
+				</span>
 			{/if}
 		</label>
 
@@ -49,13 +80,35 @@
 			<input
 				type="text"
 				class="input-field-primary input"
-				placeholder="Enter Initial Balance"
+				placeholder="Enter Initial Amount"
 				bind:value={initial_balance}
+				oninput={validateInitialAmountInput}
+				aria-describedby={initialAmountError ? 'initial-amount-error' : undefined}
+				aria-invalid={!!initialAmountError}
+				aria-required="true"
 			/>
+			{#if initialAmountError}
+				<span
+					id="initial-amount-error"
+					class="text-sm text-error-500"
+					role="alert"
+					aria-live="polite"
+				>
+					{initialAmountError}
+				</span>
+			{/if}
 		</label>
 
 		<div class="flex justify-end">
-			<button type="submit" class="btn preset-filled-primary-500" disabled={loading}>
+			<button
+				type="submit"
+				class="btn preset-filled-primary-500"
+				disabled={loading ||
+					!account_id ||
+					!initial_balance ||
+					!!initialAmountError ||
+					!!accountIdError}
+			>
 				{loading ? 'Creating...' : 'Create Account'}
 			</button>
 		</div>

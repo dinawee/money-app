@@ -14,7 +14,7 @@ export class BadRequestError extends HttpError {
 		statusText: string,
 		public errors?: Record<string, string[]>
 	) {
-		super(400, statusText, 'Invalid data');
+		super(400, statusText);
 		this.name = 'BadRequestError';
 	}
 }

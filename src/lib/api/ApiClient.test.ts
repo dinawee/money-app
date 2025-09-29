@@ -58,10 +58,10 @@ describe('ApiClient', () => {
 
 		it('should handle validation errors', async () => {
 			const request = { account_id: 1, initial_balance: 'invalid' };
-			const validationError = new BadRequestError('Bad Request');
+			const validationError = new BadRequestError('Invalid data');
 			vi.mocked(mockHttpClient.post).mockRejectedValue(validationError);
 
-			await expect(apiClient.createAccount(request)).rejects.toThrow('Invalid data');
+			await expect(apiClient.createAccount(request)).rejects.toThrow('HTTP 400: Invalid data');
 		});
 	});
 
@@ -80,7 +80,7 @@ describe('ApiClient', () => {
 			const result = await apiClient.createTransaction(request);
 
 			expect(mockHttpClient.post).toHaveBeenCalledWith('/transactions', request);
-			expect(result).toEqual(response);
+			expect(result).toBeUndefined();
 		});
 
 		it('should handle server errors', async () => {

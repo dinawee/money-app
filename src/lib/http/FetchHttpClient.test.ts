@@ -75,11 +75,13 @@ describe('FetchHttpClient', () => {
 		mockFetch.mockResolvedValue({
 			ok: false,
 			status: 400,
-			statusText: 'Bad Request',
+			statusText: 'Invalid account id',
 			json: async () => ({ error: 'Invalid account_id' })
 		});
 
-		await expect(client.get('/api/accounts/invalid')).rejects.toThrow('Invalid data');
+		await expect(client.get('/api/accounts/invalid')).rejects.toThrow(
+			'HTTP 400: Invalid account id'
+		);
 	});
 
 	it('should handle 404 Not Found errors', async () => {

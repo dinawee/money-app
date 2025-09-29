@@ -1,7 +1,17 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+
+/* ...Skeleton config here... */
 
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton/optional/presets';
 @import '@skeletonlabs/skeleton/themes/cerberus';
 
+@import './triplea.css';
+
 @source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
+
+/** global overrides **/
+.input-field-primary {
+	@apply focus:ring-secondary-500;
+}

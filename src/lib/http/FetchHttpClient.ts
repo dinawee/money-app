@@ -7,7 +7,7 @@ import { HttpError, BadRequestError, ServerError, NetworkError } from './errors'
 export class FetchHttpClient implements HttpClient {
 	async get<T>(path: string): Promise<T> {
 		try {
-			const response = await fetch(`${import.meta.env.VITE_API_URL}${path}`, {
+			const response = await fetch(path, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ export class FetchHttpClient implements HttpClient {
 
 	async post<T, B>(path: string, body: B): Promise<T> {
 		try {
-			const response = await fetch(`${import.meta.env.VITE_API_URL}${path}`, {
+			const response = await fetch(path, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -43,11 +43,12 @@ export class FetchHttpClient implements HttpClient {
 	}
 
 	private async handleResponse<T>(response: Response): Promise<T> {
+		const responseText = await response.text();
 		if (!response.ok) {
 			const { status, statusText } = response;
 
 			if (status === 400) {
-				throw new BadRequestError(statusText);
+				throw new BadRequestError(responseText);
 			}
 
 			if (status >= 500) {
@@ -57,6 +58,11 @@ export class FetchHttpClient implements HttpClient {
 			throw new HttpError(status, statusText);
 		}
 
-		return await response.json();
+		if (!responseText) {
+			return null as T;
+		}
+
+		const data = JSON.parse(responseText);
+		return data as T;
 	}
 }

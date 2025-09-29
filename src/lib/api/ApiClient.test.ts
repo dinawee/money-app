@@ -32,7 +32,7 @@ describe('ApiClient', () => {
 
 			const result = await apiClient.getAccount(1);
 
-			expect(mockHttpClient.get).toHaveBeenCalledWith('/accounts/1');
+			expect(mockHttpClient.get).toHaveBeenCalledWith('/api/accounts/1');
 			expect(result).toEqual(mockAccount);
 		});
 
@@ -52,7 +52,7 @@ describe('ApiClient', () => {
 
 			const result = await apiClient.createAccount(request);
 
-			expect(mockHttpClient.post).toHaveBeenCalledWith('/accounts', request);
+			expect(mockHttpClient.post).toHaveBeenCalledWith('/api/accounts', request);
 			expect(result).toEqual(response);
 		});
 
@@ -61,7 +61,7 @@ describe('ApiClient', () => {
 			const validationError = new BadRequestError('Invalid data');
 			vi.mocked(mockHttpClient.post).mockRejectedValue(validationError);
 
-			await expect(apiClient.createAccount(request)).rejects.toThrow('HTTP 400: Invalid data');
+			await expect(apiClient.createAccount(request)).rejects.toThrow('Invalid data');
 		});
 	});
 
@@ -79,7 +79,7 @@ describe('ApiClient', () => {
 
 			const result = await apiClient.createTransaction(request);
 
-			expect(mockHttpClient.post).toHaveBeenCalledWith('/transactions', request);
+			expect(mockHttpClient.post).toHaveBeenCalledWith('/api/transactions', request);
 			expect(result).toBeUndefined();
 		});
 

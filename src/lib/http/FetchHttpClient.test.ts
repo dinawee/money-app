@@ -21,12 +21,12 @@ describe('FetchHttpClient', () => {
 		const mockResponse = { data: 'test' };
 		mockFetch.mockResolvedValue({
 			ok: true,
-			json: async () => mockResponse
+			text: async () => JSON.stringify(mockResponse)
 		});
 
 		const result = await client.get('/test');
 
-		expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/test', {
+		expect(mockFetch).toHaveBeenCalledWith('/test', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
@@ -40,13 +40,25 @@ describe('FetchHttpClient', () => {
 		mockFetch.mockResolvedValue({
 			ok: true,
 			status: 200,
-			json: async () => mockData
+			text: async () => JSON.stringify(mockData)
 		});
 
 		const result = await client.get('/api/accounts/1');
 
 		expect(result).toEqual(mockData);
 		expect(typeof result.balance).toBe('string');
+	});
+
+	it('should handle 200 responses and return empty body', async () => {
+		mockFetch.mockResolvedValue({
+			ok: true,
+			status: 200,
+			text: async () => null
+		});
+
+		const result = await client.get('/api/accounts/1');
+
+		expect(result).toBeNull();
 	});
 
 	it('should handle POST requests with JSON body', async () => {
@@ -56,12 +68,12 @@ describe('FetchHttpClient', () => {
 		mockFetch.mockResolvedValue({
 			ok: true,
 			status: 201,
-			json: async () => responseBody
+			text: async () => JSON.stringify(responseBody)
 		});
 
 		const result = await client.post('/api/accounts', requestBody);
 
-		expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/api/accounts', {
+		expect(mockFetch).toHaveBeenCalledWith('/api/accounts', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -76,19 +88,18 @@ describe('FetchHttpClient', () => {
 			ok: false,
 			status: 400,
 			statusText: 'Invalid account id',
-			json: async () => ({ error: 'Invalid account_id' })
+			text: async () => 'Invalid account id'
 		});
 
-		await expect(client.get('/api/accounts/invalid')).rejects.toThrow(
-			'HTTP 400: Invalid account id'
-		);
+		await expect(client.get('/api/accounts/invalid')).rejects.toThrow('Invalid account id');
 	});
 
 	it('should handle 404 Not Found errors', async () => {
 		mockFetch.mockResolvedValue({
 			ok: false,
 			status: 404,
-			statusText: 'Not Found'
+			statusText: 'Not Found',
+			text: async () => ''
 		});
 
 		await expect(client.get('/api/accounts/999')).rejects.toThrow('HTTP 404: Not Found');
@@ -98,7 +109,8 @@ describe('FetchHttpClient', () => {
 		mockFetch.mockResolvedValue({
 			ok: false,
 			status: 500,
-			statusText: 'Internal Server Error'
+			statusText: 'Internal Server Error',
+			text: async () => ''
 		});
 
 		await expect(client.post('/api/accounts', {})).rejects.toThrow('Server error occurred');

@@ -10,6 +10,17 @@ export default defineConfig({
 			$lib: path.resolve('./src/lib')
 		}
 	},
+	server: {
+		// browser will request resources from your vite server (e.g., localhost:5173/api/accounts)
+		proxy: {
+			'/api': {
+				// forward the request to backend: http://127.0.0.1:8860/accounts
+				target: 'http://127.0.0.1:8860',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api/, '')
+			}
+		}
+	},
 	test: {
 		name: 'server',
 		environment: 'node',

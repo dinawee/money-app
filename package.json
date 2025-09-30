@@ -1,5 +1,5 @@
 {
-	"name": "triplea-app",
+	"name": "money-app",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -14,7 +14,7 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest run",
 		"test:browser": "vitest --config=vitest.browser.config.ts",
-		"test:all": "pnpm run test:unit && pnpm run test:browser"
+		"test": "pnpm run test:unit && pnpm run test:browser"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",

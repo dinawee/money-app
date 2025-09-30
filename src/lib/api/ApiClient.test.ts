@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ApiClient } from './ApiClient';
-import type { HttpClient } from '../http/HttpClient';
-import { NetworkError, BadRequestError, ServerError } from '../http/errors';
+import type { HttpClient } from '$lib/http/HttpClient';
+import { NetworkError, BadRequestError, ServerError } from '$lib/http/errors';
 
 describe('ApiClient', () => {
 	let apiClient: ApiClient;

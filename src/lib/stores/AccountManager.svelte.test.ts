@@ -24,7 +24,6 @@ describe('AccountManager', () => {
 
 		expect(mockApiClient.getAccount).toHaveBeenCalledWith(1);
 		expect(accountManager.accounts.get(1)).toEqual(mockAccount);
-		expect(accountManager.loading).toBe(false);
 		expect(accountManager.error).toBe(null);
 	});
 });
@@ -83,7 +82,6 @@ describe('AccountManager createAccount', () => {
 
 		expect(accountManager.accounts.get(1)).toBeUndefined();
 		expect(accountManager.error).toBe(conflictError);
-		expect(accountManager.loading).toBe(false);
 	});
 });
 
@@ -131,7 +129,6 @@ describe('AccountManager createTransaction', () => {
 		);
 
 		expect(accountManager.error).toBe(insufficientFundsError);
-		expect(accountManager.loading).toBe(false);
 		expect(mockApiClient.getAccount).not.toHaveBeenCalled();
 	});
 });

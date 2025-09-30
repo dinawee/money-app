@@ -1,12 +1,7 @@
 <script lang="ts">
 	import { validateAmount } from '$lib/utils/validation';
 
-	let {
-		onSubmit,
-		sourceAccounts,
-		destinationAccounts,
-		selectedSource
-	} = $props<{
+	let { onSubmit, sourceAccounts, destinationAccounts, selectedSource } = $props<{
 		onSubmit?: (data: any) => void;
 		sourceAccounts: number[];
 		destinationAccounts: number[];

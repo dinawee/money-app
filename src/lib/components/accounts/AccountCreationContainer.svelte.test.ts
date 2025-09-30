@@ -16,7 +16,6 @@ vi.mock('$lib/stores/context', () => ({
 
 // Import after mocking
 import AccountCreationContainer from './AccountCreationContainer.svelte';
-import type { Account } from '$lib/api/types';
 
 describe('AccountCreationContainer', () => {
 	let mockApiClient: ApiClient;

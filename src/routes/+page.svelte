@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { setAccountManager } from '$lib/stores/context';
 	import { AccountManager } from '$lib/stores/AccountManager.svelte';
 	import { ApiClient } from '$lib/api/ApiClient';

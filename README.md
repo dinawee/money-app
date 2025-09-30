@@ -1,38 +1,58 @@
-# sv
+# Financial Account Transfer Frontend
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A SvelteKit frontend application for managing financial accounts and transfers.
 
-## Creating a project
+## Requirements
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Node.js LTS/Jod v22.20.0
+
+## Setup
+
+1. Install dependencies:
 
 ```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+npm install
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+2. Start the development server:
 
 ```sh
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+3. Open your browser to `http://localhost:5173`
 
-To create a production version of your app:
+## Usage
+
+- **Create Account**: Add new financial accounts with initial balances
+- **Transfer Money**: Move funds between accounts
+- **View Dashboard**: See all accounts and total balance
+
+## Testing
 
 ```sh
-npm run build
+# Run all unit tests
+npm run test:unit
 ```
 
-You can preview the production build with `npm run preview`.
+```sh
+# Run browser tests
+npm run test:browser
+```
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```sh
+# Run all tests
+npm test
+```
+
+## Development
+
+- **Build for production**: `npm run build`
+- **Preview production build**: `npm run preview`
+
+## Architecture
+
+- **Frontend**: SvelteKit with Skeleton UI
+- **State Management**: Svelte 5 runes with context stores
+- **Testing**: Vitest + Testing Library
+- **Accessibility**: WCAG 2.1 AA compliant

@@ -64,27 +64,6 @@ describe('AccountCreationContainer', () => {
 		});
 	});
 
-	it('should show loading state when account creation is in progress', async () => {
-		const user = userEvent.setup();
-		let resolveCreate: (value: any) => void;
-		const createPromise = new Promise((resolve) => {
-			resolveCreate = resolve;
-		});
-		vi.mocked(mockApiClient.createAccount).mockReturnValue(createPromise as Promise<Account>);
-
-		const { getByLabelText, getByRole } = render(AccountCreationContainer);
-
-		const accountIdInput = getByLabelText('Account ID');
-		const submitButton = getByRole('button', { name: /create account/i });
-
-		await user.type(accountIdInput, '123');
-		await user.click(submitButton);
-
-		expect(submitButton).toBeDisabled();
-
-		resolveCreate!({ account_id: 123, balance: '0' });
-		await createPromise;
-	});
 
 	it('should handle creation errors', async () => {
 		const user = userEvent.setup();

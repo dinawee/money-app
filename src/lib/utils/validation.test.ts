@@ -8,10 +8,9 @@ describe('validation utilities', () => {
 			expect(validateAmount('100.50')).toBe(true);
 			expect(validateAmount('0.01')).toBe(true);
 			expect(validateAmount('1000')).toBe(true);
-			expect(validateAmount('0')).toBe(true);
 			expect(validateAmount('999.99')).toBe(true);
 		});
-
+		
 		it('should reject invalid formats', () => {
 			expect(validateAmount('')).toBe(false);
 			expect(validateAmount('   ')).toBe(false);
@@ -19,6 +18,7 @@ describe('validation utilities', () => {
 			expect(validateAmount('100.50.25')).toBe(false);
 			expect(validateAmount('100.')).toBe(false);
 			expect(validateAmount('.50')).toBe(false);
+			expect(validateAmount('0')).toBe(false);
 		});
 
 		it('should reject negative amounts', () => {

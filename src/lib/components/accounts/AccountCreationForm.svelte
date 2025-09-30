@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { validateAccountId, validateAmount } from '$lib/utils/validation';
 
-	let { onSubmit, loading = false } = $props();
+	let { onSubmit } = $props();
 
 	let account_id = $state<number | undefined>(undefined);
 	let initial_balance = $state('');
@@ -103,13 +103,12 @@
 			<button
 				type="submit"
 				class="btn preset-filled-primary-500"
-				disabled={loading ||
-					!account_id ||
+				disabled={!account_id ||
 					!initial_balance ||
 					!!initialAmountError ||
 					!!accountIdError}
 			>
-				{loading ? 'Creating...' : 'Create Account'}
+				Create Account
 			</button>
 		</div>
 	</form>

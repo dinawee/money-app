@@ -15,11 +15,7 @@ export function validateAmount(amount: string): boolean {
 
 	const parsed = parseFloat(amount);
 
-	if (isNaN(parsed) || !isFinite(parsed)) {
-		return false;
-	}
-
-	if (parsed < 0) {
+	if (parsed <= 0) {
 		return false;
 	}
 

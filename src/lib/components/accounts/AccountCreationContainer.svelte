@@ -5,20 +5,16 @@
 
 	const accountManager = getAccountManager();
 
-	let loading = $state(false);
 	let error = $state('');
 	let successAccount = $state<Account | null>(null);
 
 	async function handleCreateAccount(data: CreateAccountRequest) {
-		loading = true;
 		error = '';
 
 		try {
 			successAccount = await accountManager.createAccount(data);
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'An error occurred';
-		} finally {
-			loading = false;
 		}
 	}
 </script>
@@ -33,7 +29,7 @@
 	</div>
 
 	{#if !successAccount}
-		<AccountCreationForm onSubmit={handleCreateAccount} {loading} />
+		<AccountCreationForm onSubmit={handleCreateAccount} />
 	{/if}
 
 	<div class="mx-auto">

@@ -11,12 +11,10 @@
 		selectedSource?: number | null;
 	}>();
 
-	let loading = $state(false);
 	let error = $state('');
 	let successTransaction = $state<any | null>(null);
 
 	async function handleTransfer(data: TransactionRequest) {
-		loading = true;
 		error = '';
 		successTransaction = null;
 
@@ -29,8 +27,6 @@
 			};
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'An error occurred';
-		} finally {
-			loading = false;
 		}
 	}
 </script>
@@ -47,7 +43,6 @@
 	{#if !successTransaction}
 		<TransferForm
 			onSubmit={handleTransfer}
-			{loading}
 			{sourceAccounts}
 			{destinationAccounts}
 			{selectedSource}

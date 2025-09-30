@@ -3,13 +3,11 @@
 
 	let {
 		onSubmit,
-		loading = false,
 		sourceAccounts,
 		destinationAccounts,
 		selectedSource
 	} = $props<{
 		onSubmit?: (data: any) => void;
-		loading?: boolean;
 		sourceAccounts: number[];
 		destinationAccounts: number[];
 		selectedSource: number | null;
@@ -20,7 +18,6 @@
 	let amount = $state('');
 	let destinationError = $state('');
 	let amountError = $state('');
-
 
 	function handleSubmit(event: SubmitEvent) {
 		event?.preventDefault();
@@ -51,8 +48,11 @@
 	}
 
 	function validateDestinationAc() {
+		console.log('validatin', source_account_id);
 		if (source_account_id === destination_account_id) {
 			destinationError = 'Source and destination account cannot be the same';
+		} else {
+			destinationError = '';
 		}
 	}
 </script>
@@ -91,12 +91,7 @@
 				{/each}
 			</select>
 			{#if destinationError}
-				<span
-					id="destination-error"
-					class="text-sm text-error-500"
-					role="alert"
-					aria-live="polite"
-				>
+				<span id="destination-error" class="text-sm text-error-500" role="alert" aria-live="polite">
 					{destinationError}
 				</span>
 			{/if}
@@ -115,12 +110,7 @@
 				aria-required="true"
 			/>
 			{#if amountError}
-				<span
-					id="amount-error"
-					class="text-sm text-error-500"
-					role="alert"
-					aria-live="polite"
-				>
+				<span id="amount-error" class="text-sm text-error-500" role="alert" aria-live="polite">
 					{amountError}
 				</span>
 			{/if}
@@ -130,14 +120,13 @@
 			<button
 				type="submit"
 				class="btn preset-filled-primary-500"
-				disabled={loading ||
-					!source_account_id ||
+				disabled={!source_account_id ||
 					!destination_account_id ||
 					!amount ||
 					!!destinationError ||
 					!!amountError}
 			>
-				{loading ? 'Transferring...' : 'Transfer'}
+				Transfer
 			</button>
 		</div>
 	</form>

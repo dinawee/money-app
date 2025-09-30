@@ -1,13 +1,23 @@
 <script lang="ts">
-	let { account_id, account_name, balance } = $props<{
+	let { account_id, balance, handleTransfer } = $props<{
 		account_id: number;
-		account_name: string;
 		balance: string;
+		handleTransfer: (data: number) => void;
 	}>();
 </script>
 
-<div class="w-full max-w-md card preset-filled-surface-100-900 p-4 text-center">
-	<p class="font-semibold">{account_name}</p>
-	<p class="text-sm text-surface-500">Account ID: {account_id}</p>
-	<p class="text-lg font-bold">${balance}</p>
+<div class="card preset-filled-surface-100-900 p-4" role="listitem">
+	<h3 class="font-semibold">
+		{`Account ${account_id}`}
+	</h3>
+	<p class="mt-2 text-lg font-bold" aria-label="Balance: ${balance}">
+		${balance}
+	</p>
+	<button
+		class="preset-tonal-primary-500 mt-3 btn flex w-full justify-end"
+		onclick={() => handleTransfer(account_id)}
+		aria-label="Transfer money from account {account_id}"
+	>
+		Transfer Money
+	</button>
 </div>

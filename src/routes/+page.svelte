@@ -7,6 +7,7 @@
 	import AccountCreationContainer from '$lib/components/accounts/AccountCreationContainer.svelte';
 	import TransferContainer from '$lib/components/transfer/TransferContainer.svelte';
 	import ZeroState from '$lib/components/ZeroState.svelte';
+	import BalanceDisplay from '$lib/components/BalanceDisplay.svelte';
 
 	// Set up the AccountManager context at the root
 	const httpClient = new FetchHttpClient();
@@ -59,7 +60,7 @@
 	<header class="mb-8">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center gap-4">
-				<h1 class="text-3xl font-bold">Financial Dashboard</h1>
+				<h1 class="text-3xl font-bold">Money App</h1>
 			</div>
 			<div class="text-right">
 				<p class="text-sm text-surface-500">Welcome back!</p>
@@ -164,21 +165,11 @@
 					aria-label="Your accounts"
 				>
 					{#each accounts as account}
-						<div class="card preset-filled-surface-100-900 p-4" role="listitem">
-							<h3 class="font-semibold">
-								{`Account ${account.account_id}`}
-							</h3>
-							<p class="mt-2 text-lg font-bold" aria-label="Balance: ${account.balance}">
-								${account.balance}
-							</p>
-							<button
-								class="preset-tonal-primary-500 mt-3 btn flex w-full justify-end"
-								onclick={() => handleTransfer(account.account_id)}
-								aria-label="Transfer money from account {account.account_id}"
-							>
-								Transfer Money
-							</button>
-						</div>
+						<BalanceDisplay
+							account_id={account.account_id}
+							balance={account.balance}
+							{handleTransfer}
+						/>
 					{/each}
 				</div>
 			</section>

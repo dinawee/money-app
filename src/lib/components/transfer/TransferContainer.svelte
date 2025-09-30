@@ -52,7 +52,7 @@
 	<div class="mx-auto">
 		{#if successTransaction}
 			<div class="w-full max-w-md card preset-filled-success-500 p-4 text-center">
-				<p class="font-semibold text-success-500">Transfer Successful!</p>
+				<p class="font-semibold">Transfer Successful!</p>
 				<p>From Account: {successTransaction.source_account_id}</p>
 				<p>To Account: {successTransaction.destination_account_id}</p>
 				<p>Amount: ${successTransaction.amount}</p>
